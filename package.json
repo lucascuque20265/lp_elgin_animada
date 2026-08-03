@@ -1,0 +1,11 @@
+{
+  "name": "lp-elgin-animada",
+  "private": true,
+  "scripts": {
+    "dev": "serve lp_elgin_maes-main/lp-dia_maes_elgin -l 3000",
+    "start": "serve lp_elgin_maes-main/lp-dia_maes_elgin -l 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
