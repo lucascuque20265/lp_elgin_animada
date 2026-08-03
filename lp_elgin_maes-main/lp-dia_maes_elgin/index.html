@@ -84,7 +84,7 @@
 
   .hero{position:relative;padding-top:72px;background:linear-gradient(180deg,#F6D9D3 0%,#F9E3EA 100%)}
   .hero-desktop{position:relative;line-height:0}
-  .hero-desktop img.banner{width:100%;height:auto}
+  .hero-desktop .banner{width:100%;height:auto;display:block}
   #bg3d{position:absolute;inset:0;z-index:2;pointer-events:none}
   .cta-hit{position:absolute;z-index:3;left:69.5%;top:64%;width:23%;height:11%;border-radius:999px;cursor:pointer}
   .cta-hit:hover{box-shadow:0 0 0 4px rgba(255,255,255,.6),0 16px 48px rgba(225,68,121,.5);transition:box-shadow .3s}
@@ -211,12 +211,9 @@
 
 <section class="hero" id="topo">
   <div class="hero-desktop">
-    <picture>
-      <source media="(min-width: 769px)" srcset="assets/banner_site_estático png.png">
-      <img class="banner" src="assets/banner_site_estático_mobile.png" alt="Dia das Mães Elgin, cuidado que transforma o dia a dia">
-    </picture>
-    <canvas id="bg3d"></canvas>
-    <a href="#ofertas" class="cta-hit" data-scroll aria-label="Ver ofertas"></a>
+    <video class="banner" autoplay loop muted playsinline aria-label="Banner animado Elgin">
+      <source src="assets/banner_elgin.mp4" type="video/mp4">
+    </video>
   </div>
 </section>
 
