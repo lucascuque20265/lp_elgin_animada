@@ -56,7 +56,13 @@ module.exports = (req, res) => {
   // Check if file exists
   fs.stat(normalizedPath, (err, stats) => {
     if (err) {
-      // If not found, try index.html for SPA-like behavior
+      // Only fall back to index.html for extension-less route requests.
+      // Missing assets (images, css, js, fonts) should return a real 404.
+      const hasExtension = path.extname(pathname) !== '';
+      if (hasExtension) {
+        res.status(404).end('Not found');
+        return;
+      }
       const indexPath = path.join(PUBLIC_DIR, 'index.html');
       return fs.readFile(indexPath, (readErr, data) => {
         if (readErr) {
