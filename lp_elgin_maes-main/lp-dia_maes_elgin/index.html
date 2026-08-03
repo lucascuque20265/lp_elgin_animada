@@ -95,8 +95,8 @@
   }
 
   .marquee{background:var(--rosa-forte);color:#fff;overflow:hidden;padding:14px 0;white-space:nowrap}
-  .marquee .track{display:inline-flex;gap:48px;will-change:transform;animation:mq 22s linear infinite}
-  .marquee span{font-size:.8rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;display:inline-flex;align-items:center;gap:48px}
+  .marquee .track{display:inline-flex;gap:0;width:max-content;will-change:transform;animation:mq 22s linear infinite}
+  .marquee span{flex:0 0 auto;padding-right:48px;font-size:.8rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;display:inline-flex;align-items:center;gap:48px}
   .marquee i{font-size:.6rem;opacity:.7}
   @keyframes mq{to{transform:translateX(-50%)}}
 
