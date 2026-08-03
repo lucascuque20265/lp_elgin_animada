@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { createReadStream } = require('fs');
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'lp_elgin_maes-main', 'lp-dia_maes_elgin');
 
@@ -30,13 +29,16 @@ const MIME_TYPES = {
 
 module.exports = (req, res) => {
   // Parse URL
-  let pathname = decodeURIComponent(req.url) || '/';
+  let pathname = decodeURIComponent(req.url || '/');
+  // Remove query string
+  pathname = pathname.split('?')[0];
+  
   if (pathname === '/') {
     pathname = '/index.html';
   }
 
   // Prevent directory traversal
-  if (pathname.includes('..') || pathname.includes('//')) {
+  if (pathname.includes('..') || pathname.match(/\/\//)) {
     res.status(400).end('Bad request');
     return;
   }
@@ -56,8 +58,8 @@ module.exports = (req, res) => {
     if (err) {
       // If not found, try index.html for SPA-like behavior
       const indexPath = path.join(PUBLIC_DIR, 'index.html');
-      fs.stat(indexPath, (indexErr, indexStats) => {
-        if (indexErr) {
+      return fs.readFile(indexPath, (readErr, data) => {
+        if (readErr) {
           res.status(404).end('Not found');
           return;
         }
@@ -65,15 +67,14 @@ module.exports = (req, res) => {
         res.setHeader('Cache-Control', 'public, max-age=3600');
         res.setHeader('X-Content-Type-Options', 'nosniff');
         res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        createReadStream(indexPath).pipe(res);
+        res.end(data);
       });
-      return;
     }
 
     if (stats.isDirectory()) {
       const indexPath = path.join(normalizedPath, 'index.html');
-      fs.stat(indexPath, (indexErr) => {
-        if (indexErr) {
+      return fs.readFile(indexPath, (readErr, data) => {
+        if (readErr) {
           res.status(404).end('Not found');
           return;
         }
@@ -81,9 +82,8 @@ module.exports = (req, res) => {
         res.setHeader('Cache-Control', 'public, max-age=3600');
         res.setHeader('X-Content-Type-Options', 'nosniff');
         res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        createReadStream(indexPath).pipe(res);
+        res.end(data);
       });
-      return;
     }
 
     // Get MIME type
@@ -100,6 +100,13 @@ module.exports = (req, res) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-    createReadStream(normalizedPath).pipe(res);
+    // Read and send file
+    fs.readFile(normalizedPath, (readErr, data) => {
+      if (readErr) {
+        res.status(500).end('Server error');
+        return;
+      }
+      res.end(data);
+    });
   });
 };
