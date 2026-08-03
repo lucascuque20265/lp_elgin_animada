@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elgin — Especial Dia das Mães</title>
+<meta name="description" content="Campanha Dia das Mães — Elgin. Ofertas especiais em eletroportáteis." />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+  @font-face{
+    font-family:"Visby CF";
+    src:url("fonts/Connary Fagen - Visby CF Regular (1).otf") format("opentype");
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:"Visby CF";
+    src:url("fonts/Connary Fagen - Visby CF Medium (1).otf") format("opentype");
+    font-weight:500;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:"Visby CF";
+    src:url("fonts/Connary Fagen - Visby CF Demi Bold (1).otf") format("opentype");
+    font-weight:600;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:"Visby CF";
+    src:url("fonts/Connary Fagen - Visby CF Bold (1).otf") format("opentype");
+    font-weight:700 900;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:"Black Signature";
+    src:url("fonts/BlackSignature_PERSONAL_USE_ONLY (1).otf") format("opentype");
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+
+  :root{
+    --rosa:#EC5C8C;
+    --rosa-forte:#E14479;
+    --rosa-suave:#F9E3EA;
+    --rose-bg:#FBF3F0;
+    --vinho:#4E1B2E;
+    --vinho-2:#63243C;
+    --azul-elgin:#1E9BE9;
+    --grafite:#2B2B30;
+    --cinza:#8d7079;
+    --f-sans:"Visby CF","Montserrat",system-ui,sans-serif;
+    --f-script:"Black Signature","Great Vibes",cursive;
+    --radius:24px;
+    --container:1200px;
+    --sp-section:clamp(72px,10vw,140px);
+    --shadow-card:0 6px 30px rgba(78,27,46,.08);
+    --shadow-card-hover:0 28px 64px rgba(225,68,121,.20);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  body{font-family:var(--f-sans);color:var(--grafite);background:var(--rose-bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  h1,h2,h3{letter-spacing:-.02em}
+  .container{max-width:var(--container);margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+  .script{font-family:var(--f-script);font-weight:400;letter-spacing:0;line-height:1}
+
+  #progress{position:fixed;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--rosa-forte),var(--rosa));transform-origin:0 50%;transform:scaleX(0);z-index:1000}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:900;transition:background .4s var(--ease),box-shadow .4s,padding .4s}
+  header .inner{max-width:var(--container);margin:0 auto;padding:18px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+  header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 4px 24px rgba(78,27,46,.08)}
+  header .brand img{height:30px;width:auto}
+  header nav{display:flex;gap:clamp(16px,3vw,36px);align-items:center}
+  header nav a{color:var(--vinho);text-decoration:none;font-size:.85rem;font-weight:600;position:relative;padding:4px 0}
+  header nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--rosa-forte);transition:width .35s var(--ease)}
+  header nav a:hover::after{width:100%}
+  .btn-nav{background:var(--rosa-forte);color:#fff !important;padding:11px 26px;border-radius:999px;font-size:.82rem;box-shadow:0 8px 24px rgba(225,68,121,.35);transition:transform .3s,box-shadow .3s}
+  .btn-nav::after{display:none}
+  .btn-nav:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(225,68,121,.5)}
+  @media(max-width:640px){header nav a:not(.btn-nav){display:none}}
+
+  .hero{position:relative;padding-top:72px;background:linear-gradient(180deg,#F6D9D3 0%,#F9E3EA 100%)}
+  .hero-desktop{position:relative;line-height:0}
+  .hero-desktop img.banner{width:100%;height:auto}
+  #bg3d{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .cta-hit{position:absolute;z-index:3;left:69.5%;top:64%;width:23%;height:11%;border-radius:999px;cursor:pointer}
+  .cta-hit:hover{box-shadow:0 0 0 4px rgba(255,255,255,.6),0 16px 48px rgba(225,68,121,.5);transition:box-shadow .3s}
+  .btn-primario{display:inline-flex;align-items:center;gap:10px;background:var(--rosa-forte);color:#fff;font-weight:700;padding:17px 44px;border-radius:999px;text-decoration:none;font-size:.95rem;box-shadow:0 14px 40px rgba(225,68,121,.4);transition:transform .3s var(--ease),box-shadow .3s}
+  .btn-primario:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 22px 56px rgba(225,68,121,.55)}
+  @media(max-width:480px){
+    .cta-hit{left:64%;top:60%;width:32%;height:14%}
+  }
+
+  .marquee{background:var(--rosa-forte);color:#fff;overflow:hidden;padding:14px 0;white-space:nowrap}
+  .marquee .track{display:inline-flex;gap:48px;will-change:transform;animation:mq 22s linear infinite}
+  .marquee span{font-size:.8rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;display:inline-flex;align-items:center;gap:48px}
+  .marquee i{font-size:.6rem;opacity:.7}
+  @keyframes mq{to{transform:translateX(-50%)}}
+
+  .section-head{text-align:center;max-width:700px;margin:0 auto clamp(44px,6vw,72px)}
+  .section-head .tag{display:inline-flex;align-items:center;gap:10px;color:var(--rosa-forte);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;font-weight:700}
+  .section-head .tag::before,.section-head .tag::after{content:"";width:28px;height:1px;background:var(--rosa)}
+  .section-head h2{font-size:clamp(1.8rem,3.6vw,2.8rem);font-weight:800;margin:16px 0 12px;color:var(--vinho)}
+  .section-head h2 .script{color:var(--rosa-forte);font-size:1.35em;vertical-align:-.08em}
+  .section-head p{color:var(--cinza);font-size:clamp(.92rem,1.4vw,1.02rem)}
+
+  .produtos{padding:var(--sp-section) 0;background:var(--rose-bg)}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.2vw,28px)}
+  @media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}}
+  .card{background:#fff;border-radius:var(--radius);padding:clamp(18px,2vw,26px);box-shadow:var(--shadow-card);display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s;will-change:transform}
+  .card:hover{transform:translateY(-12px);box-shadow:var(--shadow-card-hover)}
+  .card .img-wrap{position:relative;border-radius:16px;overflow:hidden;margin-bottom:18px;background:var(--rosa-suave)}
+  .card .img-wrap img{width:100%;transition:transform .8s var(--ease)}
+  .card:hover .img-wrap img{transform:scale(1.07)}
+  .card .badge{position:absolute;top:12px;left:12px;background:var(--rosa-forte);color:#fff;font-size:.7rem;font-weight:800;padding:6px 13px;border-radius:999px;box-shadow:0 6px 16px rgba(225,68,121,.4)}
+  .card .fav{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:var(--rosa-forte);font-size:.85rem;cursor:pointer;transition:transform .3s;border:0}
+  .card .fav:hover{transform:scale(1.15)}
+  .card h3{font-size:1.02rem;font-weight:700;color:var(--vinho);margin-bottom:4px}
+  .card .desc{font-size:.78rem;color:var(--cinza);margin-bottom:8px;line-height:1.4}
+  .card .stars{color:#F4B860;font-size:.72rem;margin-bottom:12px}
+  .card .stars small{color:#b3a0a6;margin-left:6px;font-size:.72rem}
+  .card .old{color:#b3a0a6;text-decoration:line-through;font-size:.82rem}
+  .card .price{color:var(--rosa-forte);font-size:1.55rem;font-weight:900;line-height:1.1}
+  .card .parc{color:#9c8a90;font-size:.76rem;margin:4px 0 18px}
+  .card button{margin-top:auto;width:100%;background:var(--vinho);color:#fff;border:0;padding:15px;border-radius:999px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:var(--f-sans);display:flex;align-items:center;justify-content:center;gap:10px;transition:background .3s,transform .25s,box-shadow .3s}
+  .card button:hover{background:var(--rosa-forte);transform:scale(1.03);box-shadow:0 12px 30px rgba(225,68,121,.35)}
+
+  .beneficios{padding:var(--sp-section) 0;background:linear-gradient(160deg,var(--vinho),var(--vinho-2));color:#fff;overflow:hidden;position:relative}
+  .beneficios::before{content:"mãe";font-family:var(--f-script);position:absolute;right:-2%;top:8%;font-size:clamp(10rem,26vw,22rem);color:rgba(255,255,255,.04);pointer-events:none;line-height:1}
+  .beneficios .section-head h2{color:#fff}
+  .beneficios .section-head p{color:rgba(255,255,255,.55)}
+  .beneficios .section-head .tag{color:#ff9fbf}
+  .beneficios .section-head .tag::before,.beneficios .section-head .tag::after{background:#ff9fbf}
+  .ben-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+  @media(max-width:1024px){.ben-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.ben-grid{grid-template-columns:1fr}}
+  .ben{border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:clamp(26px,3vw,38px) clamp(20px,2.4vw,30px);background:rgba(255,255,255,.045);backdrop-filter:blur(4px);transition:transform .5s var(--ease),background .4s,border-color .4s}
+  .ben:hover{transform:translateY(-8px);background:rgba(255,255,255,.09);border-color:rgba(255,159,191,.4)}
+  .ben i{font-size:1.5rem;color:#ff9fbf;background:rgba(236,92,140,.18);width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center}
+  .ben h3{margin:20px 0 8px;font-size:1.06rem;font-weight:700}
+  .ben p{color:rgba(255,255,255,.6);font-size:.88rem;line-height:1.55}
+
+  .inst{padding:var(--sp-section) 0;background:linear-gradient(180deg,var(--rosa-suave),var(--rose-bg));text-align:center;position:relative;overflow:hidden}
+  .inst .flor{position:absolute;font-size:clamp(3rem,8vw,6rem);color:var(--rosa);opacity:.1;pointer-events:none}
+  .inst .selo-anos{display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--rosa-forte);font-weight:800;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;padding:10px 26px;border-radius:999px;box-shadow:var(--shadow-card);margin-bottom:34px}
+  .inst blockquote{font-size:clamp(1.35rem,3vw,2.15rem);font-weight:800;max-width:860px;margin:0 auto 28px;line-height:1.45;color:var(--vinho)}
+  .inst blockquote .w{display:inline-block}
+  .inst p{color:var(--cinza);max-width:620px;margin:0 auto;font-size:clamp(.92rem,1.4vw,1rem)}
+
+  .final{padding:var(--sp-section) 0;background:linear-gradient(135deg,var(--rosa-forte),var(--rosa));color:#fff;text-align:center;overflow:hidden;position:relative}
+  .final .script{font-size:clamp(3rem,8vw,5rem);display:block;margin-bottom:4px;text-shadow:0 4px 30px rgba(78,27,46,.25)}
+  .final h2{font-size:clamp(1.6rem,3.6vw,2.7rem);font-weight:800;margin-bottom:16px}
+  .final p{color:rgba(255,255,255,.85);margin-bottom:42px;font-size:clamp(.92rem,1.4vw,1.05rem)}
+  .btn-final{display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--rosa-forte);font-weight:800;padding:19px 52px;border-radius:999px;text-decoration:none;font-size:1rem;transition:transform .35s var(--ease),box-shadow .35s;box-shadow:0 14px 48px rgba(78,27,46,.3)}
+  .btn-final:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 24px 64px rgba(78,27,46,.45)}
+  .heart{position:absolute;opacity:.14;pointer-events:none;color:#fff}
+
+  footer{background:#fff;padding:clamp(56px,7vw,84px) 0 0;text-align:center}
+  .selos{border:1px solid var(--azul-elgin);border-radius:22px;padding:clamp(32px,4vw,48px) clamp(20px,3vw,40px) clamp(44px,5vw,60px);position:relative}
+  .selos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3vw,36px)}
+  @media(max-width:900px){.selos-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.selos-grid{grid-template-columns:1fr}}
+  .selo i{font-size:1.65rem;color:var(--azul-elgin)}
+  .selo h4{font-size:.92rem;color:var(--grafite);margin-top:14px;font-weight:700;line-height:1.4}
+  .selo h4 b{color:var(--azul-elgin)}
+  .selo p{font-size:.78rem;color:#8a8a92;margin-top:6px}
+  .selos .btn-azul{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);background:var(--azul-elgin);color:#fff;font-weight:700;font-size:.85rem;padding:13px 42px;border-radius:999px;text-decoration:none;box-shadow:0 10px 30px rgba(30,155,233,.35);transition:transform .3s;white-space:nowrap}
+  .selos .btn-azul:hover{transform:translateX(-50%) translateY(-3px)}
+  .fale{margin-top:clamp(56px,7vw,80px);color:var(--grafite);font-weight:700;font-size:.95rem}
+  .social{display:flex;justify-content:center;gap:14px;margin:18px 0 22px;flex-wrap:wrap}
+  .social a{width:44px;height:44px;border:1.5px solid var(--azul-elgin);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--azul-elgin);text-decoration:none;transition:all .3s}
+  .social a:hover{background:var(--azul-elgin);color:#fff;transform:translateY(-3px)}
+  .site{color:#8a8a92;font-size:.85rem;text-decoration:none}
+  .site:hover{color:var(--azul-elgin)}
+  footer .logo-foot{height:42px;width:auto;margin:32px auto 36px}
+  .foot-links{display:flex;justify-content:center;gap:clamp(16px,3vw,32px);flex-wrap:wrap;margin-bottom:36px}
+  .foot-links a{color:#8a8a92;font-size:.8rem;text-decoration:none;transition:color .3s}
+  .foot-links a:hover{color:var(--azul-elgin)}
+  .barra-azul{background:var(--azul-elgin);color:#fff;font-size:.72rem;padding:15px 20px}
+
+  #toTop{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:var(--rosa-forte);color:#fff;border:0;cursor:pointer;font-size:1rem;box-shadow:0 12px 32px rgba(225,68,121,.45);z-index:950;opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .4s,transform .4s var(--ease),visibility .4s,background .3s}
+  #toTop.show{opacity:1;visibility:visible;transform:translateY(0)}
+  #toTop:hover{background:var(--vinho)}
+
+  @media (prefers-reduced-motion: reduce){
+    .marquee .track{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header id="header">
+  <div class="inner">
+    <a class="brand" href="#topo" data-scroll>
+      <img src="assets/Logo Elgin.png" alt="Elgin">
+    </a>
+    <nav>
+      <a href="#ofertas" data-scroll>Ofertas</a>
+      <a href="#beneficios" data-scroll>Benefícios</a>
+      <a href="#sobre" data-scroll>Sobre a Elgin</a>
+      <a href="#ofertas" class="btn-nav" data-scroll>ver ofertas</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="topo">
+  <div class="hero-desktop">
+    <picture>
+      <source media="(min-width: 769px)" srcset="assets/banner_site_estático png.png">
+      <img class="banner" src="assets/banner_site_estático_mobile.png" alt="Dia das Mães Elgin, cuidado que transforma o dia a dia">
+    </picture>
+    <canvas id="bg3d"></canvas>
+    <a href="#ofertas" class="cta-hit" data-scroll aria-label="Ver ofertas"></a>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Especial Dia das Mães <i class="fa-solid fa-heart"></i> até 10x sem juros <i class="fa-solid fa-heart"></i> entrega para todo o Brasil <i class="fa-solid fa-heart"></i> ofertas por tempo limitado <i class="fa-solid fa-heart"></i></span>
+    <span>Especial Dia das Mães <i class="fa-solid fa-heart"></i> até 10x sem juros <i class="fa-solid fa-heart"></i> entrega para todo o Brasil <i class="fa-solid fa-heart"></i> ofertas por tempo limitado <i class="fa-solid fa-heart"></i></span>
+  </div>
+</div>
+
+<section class="produtos" id="ofertas">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="tag">Ofertas exclusivas</span>
+      <h2>Presentes que <span class="script">ela</span> vai amar usar</h2>
+      <p>Uma seleção da linha de eletroportáteis Elgin para deixar a cozinha dela ainda mais prática e cheia de sabor.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="img-wrap">
+          <img src="assets/airfryer.webp" alt="Air Fryer Visio Fry Elgin 5L">
+          <span class="badge">OFERTA</span>
+          <button class="fav" aria-label="Favoritar"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <h3>Air Fryer Visio Fry 5L</h3>
+        <p class="desc">Visor transparente para acompanhar o preparo e painel digital touch.</p>
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><small>(214)</small></div>
+        <div class="old">R$ 599,00</div>
+        <div class="price">R$ 479,20</div>
+        <div class="parc">em até 10x de R$ 47,92 sem juros</div>
+        <button>Comprar agora <i class="fa-solid fa-arrow-right"></i></button>
+      </article>
+      <article class="card">
+        <div class="img-wrap">
+          <img src="assets/batedeira.webp" alt="Batedeira Silver Blend Elgin">
+          <span class="badge">OFERTA</span>
+          <button class="fav" aria-label="Favoritar"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <h3>Batedeira Silver Blend</h3>
+        <p class="desc">Movimento planetário, 5 velocidades mais turbo e uso como batedeira de mão.</p>
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><small>(178)</small></div>
+        <div class="old">R$ 419,00</div>
+        <div class="price">R$ 335,20</div>
+        <div class="parc">em até 10x de R$ 33,52 sem juros</div>
+        <button>Comprar agora <i class="fa-solid fa-arrow-right"></i></button>
+      </article>
+      <article class="card">
+        <div class="img-wrap">
+          <img src="assets/cafeteira.webp" alt="Cafeteira Elétrica Trenta Caffè Elgin">
+          <span class="badge">OFERTA</span>
+          <button class="fav" aria-label="Favoritar"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <h3>Cafeteira Trenta Caffè 30 Xícaras</h3>
+        <p class="desc">Café quente por mais tempo, com filtro permanente e lavável.</p>
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><small>(96)</small></div>
+        <div class="old">R$ 249,00</div>
+        <div class="price">R$ 199,20</div>
+        <div class="parc">em até 10x de R$ 19,92 sem juros</div>
+        <button>Comprar agora <i class="fa-solid fa-arrow-right"></i></button>
+      </article>
+      <article class="card">
+        <div class="img-wrap">
+          <img src="assets/panelapressão.jpg" alt="Panela de Pressão Elétrica Digital Elgin 5L">
+          <span class="badge">20% OFF</span>
+          <button class="fav" aria-label="Favoritar"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <h3>Panela de Pressão Elétrica Digital 5L</h3>
+        <p class="desc">14 funções, 9 dispositivos de segurança e 900W de potência.</p>
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><small>(142)</small></div>
+        <div class="old">R$ 499,00</div>
+        <div class="price">R$ 399,20</div>
+        <div class="parc">em até 10x de R$ 39,92 sem juros</div>
+        <button>Comprar agora <i class="fa-solid fa-arrow-right"></i></button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="beneficios" id="beneficios">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="tag">Por que Elgin?</span>
+      <h2>Compre com tranquilidade</h2>
+      <p>Aqui você encontra tudo o que precisa para presentear sem preocupação.</p>
+    </div>
+    <div class="ben-grid">
+      <div class="ben"><i class="fa-solid fa-truck-fast"></i><h3>Entrega rápida</h3><p>Seu presente chega a tempo de surpreender no segundo domingo de maio.</p></div>
+      <div class="ben"><i class="fa-solid fa-shield-halved"></i><h3>Garantia Elgin</h3><p>Suporte técnico e garantia própria, com assistências em todo o Brasil.</p></div>
+      <div class="ben"><i class="fa-solid fa-credit-card"></i><h3>Parcelamento</h3><p>Pague em até 10x sem juros em todos os cartões, do seu jeito.</p></div>
+      <div class="ben"><i class="fa-solid fa-certificate"></i><h3>Produtos originais</h3><p>Qualidade Elgin de verdade, direto da fábrica para a casa dela.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="inst" id="sobre">
+  <i class="fa-solid fa-seedling flor" style="left:6%;top:14%"></i>
+  <i class="fa-solid fa-heart flor" style="right:8%;bottom:16%"></i>
+  <div class="container">
+    <div class="selo-anos reveal"><i class="fa-solid fa-award"></i> Mais de 70 anos de história</div>
+    <blockquote id="quote">A Elgin acredita que a tecnologia existe para cuidar de pessoas. E nenhum cuidado transforma mais o dia a dia do que o de uma mãe.</blockquote>
+    <p class="reveal">Nesta campanha de Dia das Mães, celebramos quem transforma casa em lar. São produtos pensados para facilitar a rotina dela e criar momentos deliciosos em família.</p>
+  </div>
+</section>
+
+<section class="final" id="final">
+  <div class="container">
+    <span class="script reveal">Dia das Mães</span>
+    <h2 class="reveal">Cuidado que transforma o dia a dia</h2>
+    <p class="reveal">As ofertas são por tempo limitado. Garanta o presente dela hoje mesmo e chegue no domingo com o coração tranquilo.</p>
+    <a href="#ofertas" class="btn-final reveal" data-scroll>ver ofertas <i class="fa-solid fa-heart"></i></a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="selos reveal">
+      <div class="selos-grid">
+        <div class="selo"><i class="fa-regular fa-credit-card"></i><h4>Pagamento <b>facilitado</b></h4><p>Parcele suas compras sem complicação.</p></div>
+        <div class="selo"><i class="fa-regular fa-comments"></i><h4>Suporte técnico e <b>garantia própria</b></h4><p>Atendimento Elgin em todo o Brasil.</p></div>
+        <div class="selo"><i class="fa-regular fa-heart"></i><h4>Mais de <b>70 anos</b></h4><p>De história nos lares brasileiros.</p></div>
+        <div class="selo"><i class="fa-regular fa-lightbulb"></i><h4>Soluções de uso <b>para o dia a dia</b></h4><p>Tecnologia que simplifica a rotina.</p></div>
+      </div>
+      <a href="#" class="btn-azul">saiba mais</a>
+    </div>
+
+    <div class="fale">fale com a gente</div>
+    <div class="social">
+      <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+    <a class="site" href="#">www.elgin.com.br</a>
+
+    <img class="logo-foot" src="assets/Logo Elgin.png" alt="Elgin">
+
+    <div class="foot-links">
+      <a href="#">Sobre a Elgin</a>
+      <a href="#">Política de Privacidade</a>
+      <a href="#">Trocas e Devoluções</a>
+      <a href="#">Fale Conosco</a>
+    </div>
+  </div>
+  <div class="barra-azul">© 2026 Elgin S.A. Todos os direitos reservados. Campanha fictícia para fins de demonstração.</div>
+</footer>
+
+<button id="toTop" aria-label="Voltar ao topo"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script>
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+document.querySelectorAll('[data-scroll]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = a.getAttribute('href');
+    gsap.to(window, {scrollTo:{y:target, offsetY:60}, duration:1.1, ease:'power3.inOut'});
+  });
+});
+
+gsap.to('#progress', {scaleX:1, ease:'none',
+  scrollTrigger:{start:0, end:'max', scrub:0.3}});
+
+ScrollTrigger.create({
+  start:80,
+  onUpdate:self=>document.getElementById('header').classList.toggle('scrolled', self.scroll()>80)
+});
+
+const toTop = document.getElementById('toTop');
+ScrollTrigger.create({
+  start:400,
+  onUpdate:self=>toTop.classList.toggle('show', self.scroll()>400)
+});
+toTop.addEventListener('click', ()=>{
+  gsap.to(window, {scrollTo:0, duration:1.2, ease:'power3.inOut'});
+});
+
+(function(){
+  const canvas = document.getElementById('bg3d');
+  if(!canvas || window.innerWidth < 761) return;
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+  camera.position.z = 8;
+
+  function resize(){
+    const r = canvas.parentElement.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    camera.aspect = r.width/r.height; camera.updateProjectionMatrix();
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  const N = 200, pos = new Float32Array(N*3), speeds = [];
+  for(let i=0;i<N;i++){
+    pos[i*3]=(Math.random()-0.5)*20; pos[i*3+1]=(Math.random()-0.5)*10; pos[i*3+2]=(Math.random()-0.5)*8;
+    speeds.push(0.002+Math.random()*0.005);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const points = new THREE.Points(geo, new THREE.PointsMaterial({color:0xffffff, size:0.05, transparent:true, opacity:0.55}));
+  scene.add(points);
+
+  let mx=0,my=0;
+  window.addEventListener('mousemove', e=>{
+    mx=(e.clientX/window.innerWidth-0.5); my=(e.clientY/window.innerHeight-0.5);
+  });
+
+  (function animate(){
+    requestAnimationFrame(animate);
+    const p = geo.attributes.position.array;
+    for(let i=0;i<N;i++){ p[i*3+1]+=speeds[i]; if(p[i*3+1]>5) p[i*3+1]=-5; }
+    geo.attributes.position.needsUpdate = true;
+    points.rotation.y += 0.0004;
+    camera.position.x += (mx*0.9-camera.position.x)*0.04;
+    camera.position.y += (-my*0.5-camera.position.y)*0.04;
+    camera.lookAt(0,0,0);
+    renderer.render(scene, camera);
+  })();
+})();
+
+gsap.from('.hero-desktop .banner', {scale:1.04, opacity:0, duration:1.6, ease:'power2.out'});
+gsap.to('.hero-desktop', {yPercent:6, opacity:0.55, ease:'none',
+  scrollTrigger:{trigger:'.hero', start:'bottom bottom', end:'bottom top', scrub:true}});
+
+gsap.from('header .inner', {y:-30, opacity:0, duration:0.9, ease:'power2.out', delay:0.3});
+
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.from(el, {y:48, opacity:0, duration:1, ease:'power3.out',
+    scrollTrigger:{trigger:el, start:'top 86%'}});
+});
+
+ScrollTrigger.batch('.card', {
+  start:'top 88%',
+  onEnter:batch=>gsap.fromTo(batch,
+    {y:70, opacity:0, rotateX:6},
+    {y:0, opacity:1, rotateX:0, duration:0.9, stagger:0.12, ease:'power3.out', overwrite:true})
+});
+
+gsap.utils.toArray('.ben').forEach((el,i)=>{
+  gsap.from(el, {x:i%2?70:-70, opacity:0, duration:0.9, ease:'power2.out',
+    scrollTrigger:{trigger:el, start:'top 88%'}});
+});
+
+(function(){
+  const q = document.getElementById('quote');
+  q.innerHTML = q.textContent.split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');
+  gsap.from('#quote .w', {opacity:0.1, y:8, stagger:0.05, ease:'none',
+    scrollTrigger:{trigger:'.inst', start:'top 78%', end:'top 28%', scrub:true}});
+  gsap.utils.toArray('.inst .flor').forEach((f,i)=>{
+    gsap.to(f, {y:i%2?-60:60, rotation:i%2?12:-12, ease:'none',
+      scrollTrigger:{trigger:'.inst', start:'top bottom', end:'bottom top', scrub:true}});
+  });
+})();
+
+(function(){
+  const final = document.getElementById('final');
+  for(let i=0;i<14;i++){
+    const h = document.createElement('div');
+    h.className='heart'; h.innerHTML='<i class="fa-solid fa-heart"></i>';
+    h.style.left = Math.random()*100+'%';
+    h.style.top = (40+Math.random()*60)+'%';
+    h.style.fontSize = (0.9+Math.random()*2.2)+'rem';
+    final.appendChild(h);
+    gsap.to(h, {y:-140-Math.random()*140, opacity:0, duration:4+Math.random()*4,
+      repeat:-1, delay:Math.random()*4, ease:'none'});
+  }
+})();
+
+document.querySelectorAll('.fav').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const i = b.querySelector('i');
+    const on = i.classList.toggle('fa-solid');
+    i.classList.toggle('fa-regular', !on);
+    gsap.fromTo(b, {scale:0.7}, {scale:1, duration:0.5, ease:'back.out(3)'});
+  });
+});
+</script>
+</body>
+</html>

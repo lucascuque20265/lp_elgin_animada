@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',function(){const b=document.getElementById('backToTop');window.addEventListener('scroll',()=>b.style.display=window.scrollY>400?'block':'none');b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);}});
